@@ -2,7 +2,7 @@
 - name: Create the Cloudflare DNS TXT record
   cloudflare_dns:
     domain: "{{ acmedns_cf_zone }}"
-    record: "{{ item['value']['dns-01']['resource'] }}"
+    record: "{{ item['value']['dns-01']['record'] }}"
     type: TXT
     value: "{{ item['value']['dns-01']['resource_value'] }}"
     solo: true

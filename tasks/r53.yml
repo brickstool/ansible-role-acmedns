@@ -3,7 +3,7 @@
   route53:
     command: create
     zone: "{{ acmedns_r53_zone }}"
-    record: "{{ item['value']['dns-01']['resource'] }}"
+    record: "{{ item['value']['dns-01']['record'] }}"
     type: TXT
     ttl: 5
     value: "{{ item['value']['dns-01']['resource_value'] }}"
