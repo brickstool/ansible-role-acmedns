@@ -27,6 +27,7 @@
     chain: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}-intermediate.pem"
     challenge: dns-01
     remaining_days: 60
+    terms_agreed: true
     data: "{{ _acmedns_challenge }}"
 
 - name: Delete the Cloudflare DNS TXT record

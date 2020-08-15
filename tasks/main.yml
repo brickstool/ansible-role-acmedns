@@ -41,7 +41,7 @@
     path: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.csr"
     privatekey_path: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.key"
     common_name: "{{ acmedns_le_cn }}"
-    subject_alt_name: "DNS:{{ acmedns_le_cn }}{{ ',DNS:' ~ ',DNS:'.join(acmedns_le_sans) if acmedns_le_sans else '' }}"
+    subject_alt_name: "DNS:*.{{ acmedns_le_cn }}"
   when:
     - _acmedns_le_csr.stat.exists is defined
     - not _acmedns_le_csr.stat.exists
@@ -50,12 +50,14 @@
   acme_certificate:
     acme_version: 2
     acme_directory: "{{ acmedns_le_url }}"
-    terms_agreed: true
     account_key_src: "{{ acmedns_le_accountkey }}"
     src: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.csr"
     cert: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.crt"
+    fullchain: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.pem"
+    chain: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}-intermediate.pem"
     challenge: dns-01
     remaining_days: 60
+    terms_agreed: true
   register: _acmedns_challenge
 
 - name: "Include tasks for creating and validating a {{ acmedns_provider }} TXT record"
