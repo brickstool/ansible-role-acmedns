@@ -5,7 +5,6 @@
     record: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['record'] }}"
     type: TXT
     value: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['resource_value'] }}"
-    solo: true
     account_email: "{{ acmedns_cf_email }}"
     account_api_token: "{{ acmedns_cf_token }}"
     state: present
