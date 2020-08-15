@@ -14,7 +14,7 @@
 - name: Validate the ACME DNS challenge
   acme_certificate:
     acme_version: 2
-    acme_directory: 'https://acme-v02.api.letsencrypt.org/directory'
+    acme_directory: "{{ acmedns_le_url }}"
     account_key_src: "{{ acmedns_le_accountkey }}"
     src: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.csr"
     cert: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.crt"
