@@ -2,14 +2,16 @@
 - name: Create the Cloudflare DNS TXT record
   cloudflare_dns:
     domain: "{{ acmedns_cf_zone }}"
-    record: "{{ item['value']['dns-01']['record'] }}"
+    record: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['record'] }}"
     type: TXT
-    value: "{{ item['value']['dns-01']['resource_value'] }}"
+    value: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['resource_value'] }}"
     solo: true
     account_email: "{{ acmedns_cf_email }}"
     account_api_token: "{{ acmedns_cf_token }}"
     state: present
-  with_dict: "{{ _acmedns_challenge['challenge_data'] }}"
+  with_items:
+    - "{{ acmedns_le_cn }}"
+    - "*.{{ acmedns_le_cn }}"
 
 - name: Wait
   wait_for:
@@ -33,10 +35,12 @@
 - name: Delete the Cloudflare DNS TXT record
   cloudflare_dns:
     domain: "{{ acmedns_cf_zone }}"
-    record: "{{ item['value']['dns-01']['resource'] }}"
+    record: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['record'] }}"
     type: TXT
     account_email: "{{ acmedns_cf_email }}"
     account_api_token: "{{ acmedns_cf_token }}"
     state: absent
-  with_dict: "{{ _acmedns_challenge['challenge_data'] }}"
+  with_items:
+    - "{{ acmedns_le_cn }}"
+    - "*.{{ acmedns_le_cn }}"
 ...

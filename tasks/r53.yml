@@ -3,15 +3,17 @@
   route53:
     command: create
     zone: "{{ acmedns_r53_zone }}"
-    record: "{{ item['value']['dns-01']['record'] }}"
+    record: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['record'] }}"
     type: TXT
     ttl: 5
-    value: "{{ item['value']['dns-01']['resource_value'] }}"
+    value: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['resource_value'] | regex_replace('^(.*)$', '\"\\1\"') }}"
     aws_access_key: "{{ acmedns_r53_access_key }}"
     aws_secret_key: "{{ acmedns_r53_secret_key }}"
     overwrite: yes
     wait: yes
-  with_dict: "{{ _acmedns_challenge['challenge_data'] }}"
+  with_items:
+    - "{{ acmedns_le_cn }}"
+    - "*.{{ acmedns_le_cn }}"
 
 - name: Wait
   wait_for:
@@ -35,11 +37,13 @@
   route53:
     command: delete
     zone: "{{ acmedns_r53_zone }}"
-    record: "{{ item['value']['dns-01']['resource'] }}"
+    record: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['record'] }}"
     type: TXT
     ttl: 5
-    value: "{{ item['value']['dns-01']['resource_value'] }}"
+    value: "{{ _acmedns_challenge.challenge_data[item]['dns-01']['resource_value'] | regex_replace('^(.*)$', '\"\\1\"') }}"
     aws_access_key: "{{ acmedns_r53_access_key }}"
     aws_secret_key: "{{ acmedns_r53_secret_key }}"
-  with_dict: "{{ _acmedns_challenge['challenge_data'] }}"
+  with_items:
+    - "{{ acmedns_le_cn }}"
+    - "*.{{ acmedns_le_cn }}"
 ...
