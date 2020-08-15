@@ -3,15 +3,19 @@
   route53:
     command: create
     zone: "{{ acmedns_r53_zone }}"
-    record: "{{ _acmedns_challenge.challenge_data[item]['dns-01'].record }}"
+    record: "{{ item['value']['dns-01']['resource'] }}"
     type: TXT
     ttl: 5
-    value: "\"{{ _acmedns_challenge.challenge_data[item]['dns-01'].resource_value }}\""
+    value: "{{ item['value']['dns-01']['resource_value'] }}"
     aws_access_key: "{{ acmedns_r53_access_key }}"
     aws_secret_key: "{{ acmedns_r53_secret_key }}"
     overwrite: yes
     wait: yes
-  with_items: "{{ [acmedns_le_cn] + acmedns_le_sans }}"
+  with_dict: "{{ _acmedns_challenge['challenge_data'] }}"
+
+- name: Wait
+  wait_for:
+    timeout: 30
 
 - name: Validate the ACME DNS challenge
   acme_certificate:
@@ -30,11 +34,11 @@
   route53:
     command: delete
     zone: "{{ acmedns_r53_zone }}"
-    record: "{{ _acmedns_challenge.challenge_data[item]['dns-01'].record }}"
+    record: "{{ item['value']['dns-01']['resource'] }}"
     type: TXT
     ttl: 5
-    value: "\"{{ _acmedns_challenge.challenge_data[item]['dns-01'].resource_value }}\""
+    value: "{{ item['value']['dns-01']['resource_value'] }}"
     aws_access_key: "{{ acmedns_r53_access_key }}"
     aws_secret_key: "{{ acmedns_r53_secret_key }}"
-  with_items: "{{ [acmedns_le_cn] + acmedns_le_sans }}"
+  with_dict: "{{ _acmedns_challenge['challenge_data'] }}"
 ...
