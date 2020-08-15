@@ -53,7 +53,7 @@
     terms_agreed: true
     account_key_src: "{{ acmedns_le_accountkey }}"
     src: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.csr"
-    cert: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.pem"
+    cert: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.crt"
     challenge: dns-01
     remaining_days: 60
   register: _acmedns_challenge

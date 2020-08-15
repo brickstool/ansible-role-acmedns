@@ -19,8 +19,8 @@
     acme_directory: 'https://acme-v02.api.letsencrypt.org/directory'
     account_key_src: "{{ acmedns_le_accountkey }}"
     src: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.csr"
-    cert: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.pem"
-    fullchain: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}-fullchain.pem"
+    cert: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.crt"
+    fullchain: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}.pem"
     chain: "{{ acmedns_le_dir }}/{{ acmedns_le_cn }}-intermediate.pem"
     challenge: dns-01
     remaining_days: 60
