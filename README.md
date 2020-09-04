@@ -96,7 +96,7 @@ acmedns_le_accountkey: /etc/acme/acme.key  # default: ~/.local/share/letsencrypt
 ---
 - hosts: localhost
   roles:
-    - role: brickstool.acmedns
+    - role: snoord.acmedns
       vars:
         # LetsEncrypt
         acmedns_le_email: user@example.com
@@ -115,7 +115,7 @@ acmedns_le_accountkey: /etc/acme/acme.key  # default: ~/.local/share/letsencrypt
 ---
 - hosts: localhost
   roles:
-    - role: brickstool.acmedns
+    - role: snoord.acmedns
       vars:
         # LetsEncrypt
         acmedns_le_email: user@example.com
